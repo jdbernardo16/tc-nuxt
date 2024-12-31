@@ -42,25 +42,11 @@ jobs:
             - name: Build Nuxt app
               run: npm run generate
 
-            - name: Install lftp
-              run: sudo apt-get update && sudo apt-get install -y lftp
-
-            - name: Deploy to Hostinger
-              env:
-                  FTP_HOST: ${{ secrets.FTP_HOST }}
-                  FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-                  FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+            - name: Create another Branch containing the dist files
               run: |
-                  ping -c 4 $FTP_HOST || (echo "Cannot reach FTP host" && exit 1)
-                  if [ ! -d "./dist" ]; then
-                      echo "Error: ./dist directory does not exist or is empty."
-                      exit 1
-                  fi
-                  lftp -c "
-                  set ftp:passive-mode true;
-                  set net:timeout 10;
-                  set net:max-retries 2;
-                  open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST;
-                  mirror --reverse --only-newer ./dist/ /__tilapiachips;
-                  quit
-                  "
+                  git config --global user.name "jbpraxxys"
+                  git config --global user.email "jbbernardo.praxxys@gmail.com"
+                  git checkout --orphan gh-pages
+                  git --work-tree=dist add --all
+                  git --work-tree=dist commit -m "Deploy Nuxt app to gh-pages"
+                  git push origin HEAD:gh-pages --force
