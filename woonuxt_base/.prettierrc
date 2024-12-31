@@ -1,0 +1,20 @@
+{
+    "printWidth": 120,
+    "trailingComma": "all",
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "singleAttributePerLine": true,
+    "arrowParens": "always",
+    "vueIndentScriptAndStyle": false,
+    "bracketSameLine": false,
+    "overrides": [
+        {
+            "files": "*.vue",
+            "options": {
+                "tabWidth": 4
+            }
+        }
+    ]
+}

@@ -1,0 +1,34 @@
+query getBlogs {
+  posts {
+    edges {
+      node {
+        uri
+        date
+        ...on WithAcfBlog {
+          blog {
+            blogContent {
+              featuredToHome
+              title
+              shortDescription
+              banner {
+                node {
+                  sourceUrl
+                }
+              }
+              description
+            }
+            metaTags {
+              metaTitle
+              metaDescription
+              metaImage {
+                node {
+                  sourceUrl
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }	
+}

@@ -1,0 +1,71 @@
+query getHome {
+    page (id: "home", idType: URI) {
+      id
+      title
+      slug
+      ...on WithAcfHome {
+        home {
+          frame1 {
+            header
+            description
+          }
+          frame2 {
+            header
+            featuredProducts {
+              name
+              description
+              image {
+                node {
+                  id
+                  sourceUrl
+                }
+              }
+            }
+          }
+          frame3 {
+            header
+            description
+            image {
+              node {
+                sourceUrl
+              }
+            }
+            contactInfo {
+              email
+              phone
+              location
+              googleMapLink
+            }
+          }
+          frame4 {
+            header
+            packages {
+              title
+              description
+              image {
+                node { sourceUrl }
+              }
+              packageLink
+            }
+          }
+          frame5 {
+            header
+            testimonies {
+              title
+              description
+              image {
+                node {
+                  sourceUrl
+                }
+              }
+              name
+              subText
+            }
+          }
+          frame6 {
+            header
+          }
+        }
+      }
+    }
+  }

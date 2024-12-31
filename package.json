@@ -1,0 +1,48 @@
+{
+    "name": "woonuxt",
+    "private": true,
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev --host",
+        "dev:ssl": "NODE_TLS_REJECT_UNAUTHORIZED=0 nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
+        "format": "prettier --write \"woonuxt_base/app/components/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"woonuxt_base/app/pages/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"woonuxt_base/app/plugins/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"woonuxt_base/app/composables/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\" \"woonuxt_base/assets/**/*.{js,jsx,ts,tsx,vue,html,css,scss,json,md}\"",
+        "serve": "nuxi generate && npx serve .output/public -l 8080"
+    },
+    "dependencies": {
+        "@heroicons/vue": "^2.1.5",
+        "@nuxt/icon": "^1.1.1",
+        "@nuxt/image": "^1.7.0",
+        "@nuxtjs/color-mode": "^3.5.2",
+        "@nuxtjs/google-fonts": "^3.2.0",
+        "@nuxtjs/seo": "^2.0.0-rc.14",
+        "@nuxtjs/sitemap": "^6.0.0",
+        "@stripe/stripe-js": "^4.10.0",
+        "@studio-freight/lenis": "^1.0.42",
+        "@vueform/slider": "^2.1.10",
+        "@vueuse/core": "^12.2.0",
+        "gsap": "^3.12.5",
+        "nuxt": "^3.14.159",
+        "nuxt-gtag": "^2.0.7",
+        "nuxt-lazy-hydrate": "^1.0.0",
+        "swiper": "^11.1.9"
+    },
+    "devDependencies": {
+        "@nuxt/icon": "^1.10.3",
+        "@nuxt/image": "1.8.1",
+        "@nuxtjs/i18n": "^8.5.5",
+        "@nuxtjs/tailwindcss": "^6.12.2",
+        "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@tailwindcss/typography": "^0.5.15",
+        "nuxt": "^3.15.0",
+        "nuxt-graphql-client": "^0.2.43",
+        "prettier": "^3.4.2",
+        "sass-embedded": "^1.83.0",
+        "woonuxt-settings": "^1.0.61"
+    },
+    "overrides": {
+        "sharp": "0.32.6"
+    }
+}

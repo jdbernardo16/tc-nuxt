@@ -1,0 +1,33 @@
+query getBlogBySlug($uri: String!) {
+    nodeByUri(uri: $uri) {
+        ... on Post {
+            title
+            date
+            uri
+            ... on WithAcfBlog {
+                blog {
+                    blogContent {
+                        featuredToHome
+                        title
+                        shortDescription
+                        banner {
+                            node {
+                                sourceUrl
+                            }
+                        }
+                        description
+                    }
+                    metaTags {
+                        metaTitle
+                        metaDescription
+                        metaImage {
+                            node {
+                                sourceUrl
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
