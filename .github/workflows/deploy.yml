@@ -1,16 +1,16 @@
-name: Build and Deploy Dist
+name: Deploy Nuxt App to Hostinger
 
 on:
     push:
         branches:
-            - main
+            - main # Trigger workflow on changes to the main branch
 
 jobs:
-    build:
+    deploy:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Check out the repository
+            - name: Checkout code
               uses: actions/checkout@v3
 
             - name: Setup Node.js
@@ -42,31 +42,16 @@ jobs:
             - name: Build Nuxt app
               run: npm run generate
 
-            - name: Deploy to dist branch
+            - name: Install lftp
+              run: sudo apt-get update && sudo apt-get install -y lftp
+
+            - name: Deploy to Hostinger
+              env:
+                  FTP_HOST: ${{ secrets.FTP_HOST }}
+                  FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+                  FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
               run: |
-                  # Configure Git
-                  git config user.name "jbpraxxys"
-                  git config user.email "jbbernardo.praxxys@gmail.com"
-
-                  # Ensure dist folder exists
-                  if [ ! -d "dist" ]; then
-                    echo "Error: dist folder not found!"
-                    exit 1
-                  fi
-
-                  # Switch to the dist branch
-                  git checkout --orphan dist
-
-                  # Remove existing files
-                  git rm -rf .
-
-                  # Copy the dist files to the branch
-                  rsync -av --progress dist/ . --exclude .git
-
-                  # Add and commit changes
-                  git add .
-                  git commit -m "Deploy new build from main"
-
-                  # Push to dist branch
-                  https://github.com/jdbernardo16/tc-nuxt.git
-                  git push --force origin dist
+                  lftp -c "
+                  open -u $FTP_USERNAME,$FTP_PASSWORD ftp://$FTP_HOST;
+                  mirror --reverse --only-newer ./dist/ public_html/__tilapiachips/;
+                  "
