@@ -48,16 +48,17 @@ jobs:
               run: npm run generate
 
             # Set up Git authentication using GITHUB_TOKEN
-            - name: Set up Git authentication
+            - name: Set up GitHub PAT for authentication
               run: |
                   git config --global user.name "github-actions[bot]"
                   git config --global user.email "github-actions[bot]@users.noreply.github.com"
-                  git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
+                  git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/jdbernardo16/tc-nuxt.git
 
-            # Push to dist branch
-            - name: Deploy to dist branch
+            - name: Create and push dist branch
               run: |
                   git checkout --orphan dist
-                  git --work-tree=./dist add --all
-                  git --work-tree=./dist commit -m "Deploy to dist branch"
-                  git push origin dist --force
+                  git reset --hard
+                  cp -r ./dist/* .
+                  git add .
+                  git commit -m "Deploy dist files"
+                  git push origin dist
