@@ -68,5 +68,5 @@ jobs:
                   git commit -m "Deploy new build from main"
 
                   # Push to dist branch
-                  git remote set-url origin https://github.com/${{ github.repository }}.git
+                  https://github.com/jdbernardo16/tc-nuxt.git
                   git push --force origin dist
