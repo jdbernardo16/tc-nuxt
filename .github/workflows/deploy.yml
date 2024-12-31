@@ -53,5 +53,5 @@ jobs:
               run: |
                   lftp -c "
                   open -u $FTP_USERNAME,$FTP_PASSWORD ftp://$FTP_HOST;
-                  mirror --reverse --only-newer ./dist/ public_html/__tilapiachips/;
+                  mirror --reverse --only-newer ./dist/ /;
                   "
