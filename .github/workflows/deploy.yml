@@ -3,7 +3,7 @@ name: Deploy Nuxt App to Hostinger
 on:
     push:
         branches:
-            - main # Trigger workflow on changes to the main branch
+            - main
 
 jobs:
     deploy:
@@ -42,13 +42,13 @@ jobs:
             - name: Build Nuxt app
               run: npm run generate
 
-            - name: Create another Branch containing the dist files
+            - name: Deploy to Hostinger via SSH
               env:
-                  GH_PAT: ${{ secrets.GH_PAT }}
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                  SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
               run: |
-                  git config --global user.name "jdbernardo16"
-                  git config --global user.email "jdbernardo16@gmail.com"
-                  git checkout --orphan gh-pages
-                  git --work-tree=dist add --all
-                  git --work-tree=dist commit -m "Deploy Nuxt app to gh-pages"
-                  git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} HEAD:gh-pages --force
+                  mkdir -p ~/.ssh
+                  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+                  chmod 600 ~/.ssh/id_ed25519
+                  echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+                  rsync -avz -e "ssh -p 65002" ./dist/ u530423562@153.92.10.245:/domains/uatproject.website/public_html/__tilapiachips
