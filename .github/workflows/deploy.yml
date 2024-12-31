@@ -1,4 +1,4 @@
-name: Deploy Nuxt App to Hostinger
+name: Deploy Nuxt App to Dist Branch
 
 on:
     push:
@@ -47,14 +47,12 @@ jobs:
             - name: Build Nuxt app
               run: npm run generate
 
-            # Set up SSH key and deploy via rsync
-            - name: Deploy to Hostinger
-              env:
-                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                  SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+            # Push to dist branch
+            - name: Deploy to dist branch
               run: |
-                  mkdir -p ~/.ssh
-                  echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
-                  chmod 600 ~/.ssh/id_ed25519
-                  echo "${SSH_KNOWN_HOSTS}" > ~/.ssh/known_hosts
-                  rsync -avz -e "ssh -p 65002" ./dist/ u530423562@153.92.10.245:/domains/uatproject.website/public_html/__tilapiachips
+                  git config --global user.name "github-actions[bot]"
+                  git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                  git checkout --orphan dist
+                  git --work-tree=./dist add --all
+                  git --work-tree=./dist commit -m "Deploy to dist branch"
+                  git push origin dist --force
