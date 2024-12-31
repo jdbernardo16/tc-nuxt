@@ -1,4 +1,4 @@
-name: Build and Deploy to Hostinger
+name: Build and Deploy Dist
 
 on:
     push:
@@ -6,34 +6,42 @@ on:
             - main
 
 jobs:
-    build-and-deploy:
+    build:
         runs-on: ubuntu-latest
 
         steps:
-            # Step 1: Check out the code from the main branch
-            - name: Checkout code
+            - name: Check out the repository
               uses: actions/checkout@v3
 
-            # Step 2: Set up Node.js
             - name: Set up Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: 16
 
-            # Step 3: Install dependencies
             - name: Install dependencies
               run: npm install
 
-            # Step 4: Build the project
             - name: Build project
               run: npm run generate
 
-            # Step 5: Deploy via FTP to Hostinger
-            - name: Deploy to Hostinger
-              uses: SamKirkland/FTP-Deploy-Action@v4.5.0
-              with:
-                  server: ftp://153.92.10.245
-                  username: ${{ secrets.FTP_USERNAME }}
-                  password: ${{ secrets.FTP_PASSWORD }}
-                  local-dir: ./dist
-                  server-dir: /public_html/__tilapiachips
+            - name: Deploy to dist branch
+              run: |
+                  # Configure Git
+                  git config user.name "jdbernardo16"
+                  git config user.email "jdbernardo16@gmail.com"
+
+                  # Switch to the dist branch
+                  git checkout --orphan dist
+
+                  # Clear all existing files
+                  git rm -rf .
+
+                  # Copy the dist files to the branch
+                  cp -r dist/* .
+
+                  # Add and commit changes
+                  git add .
+                  git commit -m "Deploy new build from main"
+
+                  # Push to dist branch
+                  git push --force origin dist
