@@ -45,21 +45,28 @@ jobs:
             - name: Deploy to dist branch
               run: |
                   # Configure Git
-                  git config user.name "jdbernardo16"
-                  git config user.email "jdbernardo16@gmail.com"
+                  git config user.name "jbpraxxys"
+                  git config user.email "jbbernardo.praxxys@gmail.com"
+
+                  # Ensure dist folder exists
+                  if [ ! -d "dist" ]; then
+                    echo "Error: dist folder not found!"
+                    exit 1
+                  fi
 
                   # Switch to the dist branch
                   git checkout --orphan dist
 
-                  # Clear all existing files
+                  # Remove existing files
                   git rm -rf .
 
                   # Copy the dist files to the branch
-                  cp -r dist/* .
+                  rsync -av --progress dist/ . --exclude .git
 
                   # Add and commit changes
                   git add .
                   git commit -m "Deploy new build from main"
 
                   # Push to dist branch
+                  git remote set-url origin https://github.com/${{ github.repository }}.git
                   git push --force origin dist
