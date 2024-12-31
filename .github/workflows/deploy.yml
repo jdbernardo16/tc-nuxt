@@ -51,7 +51,7 @@ jobs:
                   FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
                   FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
               run: |
-                  ping -c 4 ftp://$FTP_HOST || (echo "Cannot reach FTP host" && exit 1)
+                  ping -c 4 $FTP_HOST || (echo "Cannot reach FTP host" && exit 1)
                   if [ ! -d "./dist" ]; then
                       echo "Error: ./dist directory does not exist or is empty."
                       exit 1
@@ -60,7 +60,7 @@ jobs:
                   set ftp:passive-mode true;
                   set net:timeout 10;
                   set net:max-retries 2;
-                  open -u $FTP_USERNAME,$FTP_PASSWORD ftp://$FTP_HOST;
-                  mirror --reverse --only-newer ./dist/ /;
+                  open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST;
+                  mirror --reverse --only-newer ./dist/ /__tilapiachips;
                   quit
                   "
