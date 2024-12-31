@@ -43,9 +43,11 @@ jobs:
               run: npm run generate
 
             - name: Create another Branch containing the dist files
+              env:
+                  GH_PAT: ${{ secrets.GH_PAT }}
               run: |
-                  git config --global user.name "jbpraxxys"
-                  git config --global user.email "jbbernardo.praxxys@gmail.com"
+                  git config --global user.name "jdbernardo16"
+                  git config --global user.email "jdbernardo16@gmail.com"
                   git checkout --orphan gh-pages
                   git --work-tree=dist add --all
                   git --work-tree=dist commit -m "Deploy Nuxt app to gh-pages"
