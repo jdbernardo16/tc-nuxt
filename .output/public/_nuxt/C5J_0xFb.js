@@ -1,0 +1,1 @@
+import{al as n,o,c as a,t as i,b as s}from"./Dwb8sLJR.js";const m={__name:"ResetFiltersButton",setup(u){const{resetFilter:t}=n();return(r,e)=>(o(),a("button",{class:"bg-primary rounded-lg font-bold mt-8 text-center text-white text-sm w-full p-2",onClick:e[0]||(e[0]=(...l)=>s(t)&&s(t)(...l))},i(r.$t("messages.general.clearFilters")),1))}};export{m as default};
