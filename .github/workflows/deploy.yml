@@ -3,21 +3,24 @@ name: Deploy Nuxt App to Hostinger
 on:
     push:
         branches:
-            - main
+            - main # Trigger workflow on changes to the main branch
 
 jobs:
     deploy:
         runs-on: ubuntu-latest
 
         steps:
+            # Checkout code
             - name: Checkout code
               uses: actions/checkout@v3
 
+            # Set up Node.js
             - name: Setup Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: 18
 
+            # Create .env file
             - name: Create .env file
               env:
                   NUXT_PUBLIC_PRODUCTS_PER_PAGE: ${{ secrets.NUXT_PUBLIC_PRODUCTS_PER_PAGE }}
@@ -36,19 +39,22 @@ jobs:
                   echo "API_BASE_URL=\"${API_BASE_URL}\"" >> .env
                   echo "SITE_URL=\"${SITE_URL}\"" >> .env
 
+            # Install dependencies
             - name: Install dependencies
               run: npm install
 
+            # Build Nuxt app
             - name: Build Nuxt app
               run: npm run generate
 
-            - name: Deploy to Hostinger via SSH
+            # Set up SSH key and deploy via rsync
+            - name: Deploy to Hostinger
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
                   SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
               run: |
                   mkdir -p ~/.ssh
-                  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+                  echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
                   chmod 600 ~/.ssh/id_ed25519
-                  echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+                  echo "${SSH_KNOWN_HOSTS}" > ~/.ssh/known_hosts
                   rsync -avz -e "ssh -p 65002" ./dist/ u530423562@153.92.10.245:/domains/uatproject.website/public_html/__tilapiachips
