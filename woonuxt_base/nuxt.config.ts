@@ -45,7 +45,7 @@ export default defineNuxtConfig({
     'graphql-client': {
         clients: {
             default: {
-                host: process.env.GQL_HOST || 'http://localhost:4000/graphql',
+                host: process.env.GQL_HOST || 'https://admin.tilapiachips.com/graphql',
                 corsOptions: { mode: 'cors', credentials: 'include' },
             },
         },
